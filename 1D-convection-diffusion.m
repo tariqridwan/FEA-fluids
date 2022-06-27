@@ -2,8 +2,11 @@
 %        a u_x - nu u_xx = f
 % with Dirichlet boundary conditions using
 % the finite element method with some stabilized formulations.
-% written by Tariq Ridwan: tariq.ridwan@bsc.es
-% close all;
+%            -------
+% by Tariq Ridwan: tariq.ridwan@bsc.es
+% Barcelona Supercomputing Center // Universitat Politècnica de Catalunya
+%%
+close all;
 clear; clc
 
 disp('This program solves a convection-diffusion equation: a u_x - nu u_xx = f')
@@ -210,5 +213,5 @@ print Galerkin.png -dpng
 print Galerkin.eps -depsc
 print Galerkin.pdf -dpdf
 savefig('Galerkin.fig')
-hold on
+% hold on
 
