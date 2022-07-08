@@ -1,14 +1,11 @@
 % This program solves a one-dimensional convection-diffusion equation
 %        a u_x - nu u_xx = f
 % with Dirichlet boundary conditions using
-% the finite element method with some stabilized formulations.
-%            -------
-% by Tariq Ridwan: tariq.ridwan@bsc.es
-% Barcelona Supercomputing Center // Universitat Politècnica de Catalunya
-%%
+% the finite element method with some stabilized formulations
+% and with linear elements
+% written by Tariq Ridwan: tariq.ridwan@bsc.es
 close all;
 clear; clc
-
 disp('This program solves a convection-diffusion equation: a u_x - nu u_xx = f')
 disp('with 0<x<1 and essential boundary conditions on both ends.')
 disp('One of the following problems can be solved at once:')
@@ -79,7 +76,7 @@ if method == 0 % Galerkin
     beta = 0;
 elseif method == -1 % Full-upwind
     beta = 1;
-elseif method == 1 || method == 2 % SU or SUPG
+elseif method == 1 || method == 2 || method == 3 || method == 4 % SU / SUPG / GLS / SGS
     beta = coth(Pe) - 1/Pe;
 end
 Ke = (nu+beta*a*h/2)*[dN1_dx_dN1_dx, dN1_dx_dN2_dx; dN2_dx_dN1_dx, dN2_dx_dN2_dx];
@@ -90,7 +87,7 @@ if problem == 1 % source = 0, for all methods
 elseif problem == 2 % source = 1
     if method == 0 || method == -1 || method == 1 % Galerkin / FU / SU
         Fe = [h/2; h/2];
-    elseif method == 2 % SUPG
+    elseif method == 2 || method == 3 || method == 4 % SUPG / GLS / SGS
         Fe = [h/2 - beta*h/2; h/2 + beta*h/2]; % beta*h/2 = tau*a
     end
 elseif problem == 3 || problem == 4 || problem == 5 % source = sin(pi*x) OR 10*exp(-5*x)-4*exp(-x)
@@ -112,7 +109,7 @@ elseif problem == 3 || problem == 4 || problem == 5 % source = sin(pi*x) OR 10*e
             Fe(:,n) = [h/3*s1 + h/6*s2;... N1s
                        h/6*s1 + h/3*s2]; % N2s
         end
-    elseif method == 2 % SUPG
+    elseif method == 2 || method == 3 || method == 4 % SUPG / GLS / SGS
         Fe = zeros(2,nElem);
         for n = 1:nElem
             x1 = x(n);
@@ -204,6 +201,10 @@ elseif method == 1 % SU
     l = legend('SU','exact','Location','South');
 elseif method == 2 % SUPG
     l = legend('SUPG','exact','Location','South');
+elseif method == 3 % GLS
+    l = legend('GLS','exact','Location','South');
+elseif method == 4 % SGS
+    l = legend('SGS','exact','Location','South');
 end
 set(l,'FontSize',16)
 set(gca, 'FontSize',16);
@@ -213,5 +214,5 @@ print Galerkin.png -dpng
 print Galerkin.eps -depsc
 print Galerkin.pdf -dpdf
 savefig('Galerkin.fig')
-% hold on
+hold on
 
