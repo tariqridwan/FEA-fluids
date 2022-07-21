@@ -148,7 +148,7 @@ else % for constant source-term, problem == 1,2
         Fg = Fg + Fnew; % Global source matrix
     end
 end % Linear element calculation ends
-elseif ElemType == 2
+elseif ElemType == 2 % quadratic element
 %% Method used for solving the problem
 disp ('The problem can be solved using one of the following methods: ');
 disp ('[0] Galerkin, [1] SU, [2] SUPG');
