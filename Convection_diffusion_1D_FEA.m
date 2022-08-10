@@ -91,7 +91,8 @@ elseif method == 1 || method == 2 || method == 3 || method == 4 % SU / SUPG / GL
     beta = coth(Pe) - 1/Pe;
 end
 Ke = (nu+beta*a*h/2)*[dN1_dx_dN1_dx, dN1_dx_dN2_dx; dN2_dx_dN1_dx, dN2_dx_dN2_dx];
-CKe = Ce + Ke; % Element convection (Ce) + diffusion (Ke) matrix
+%% 2,3. Element convection (Ce) + diffusion (Ke) matrix
+CKe = Ce + Ke;
 %% 3. Element source matrix
 if problem == 1 % source = 0, for all methods
     Fe = [0; 0];
@@ -192,8 +193,9 @@ Ke = nu*[dN1_dx_dN1_dx, dN1_dx_dN2_dx, dN1_dx_dN3_dx;...
    +(a*h/2)*[beta_c*dN1_dx_dN1_dx, beta_c*dN1_dx_dN2_dx, beta_c*dN1_dx_dN3_dx;...
              beta  *dN2_dx_dN1_dx, beta  *dN2_dx_dN2_dx, beta  *dN2_dx_dN3_dx;...
              beta_c*dN3_dx_dN1_dx, beta_c*dN3_dx_dN2_dx, beta_c*dN3_dx_dN3_dx];
+%% 2,3. Element convection (Ce) + diffusion (Ke) matrix
 if method == 0 || method == 1 % Galerkin / SU
-    CKe = Ce + Ke; % Element convection (Ce)+diffusion (Ke)
+    CKe = Ce + Ke;
 elseif method == 2 % SUPG
     dN1_dx_d2N1_dx2 = -1/h^2;
     dN1_dx_d2N2_dx2 = 2/h^2;
