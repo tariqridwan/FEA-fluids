@@ -311,12 +311,14 @@ elseif problem == 5 % source = 20*exp(-5*(x-1/8))-10*exp(-5*(x-1/4))
         (exp(5/8)^7*(5*exp(a/nu)*nu+exp(a/nu)*a-5*nu-a));
 end
 %% Error calculation
-Error = zeros(nPt,1);
+Error = zeros(nPt,1); % initiating absolute error
+Error_square = zeros(nPt,1);
 for n = 2:nPt-1
     ana = u_ex( (n-1)*(h*n_x_ex) +1); % analytical solution at x location
-%     Error(n) = abs((u(n) - ana)/ana);
-    Error(n) = u(n) - ana;
+    Error(n) = abs( u(n) - ana ); % absolute value of the error
+    Error_square(n) = Error(n)^2; % square of the absolute error
 end
+L2_error = sqrt(sum(Error_square)) % calculating L2-error
 %% Post-processing
 yyaxis left
 plot(x,u,'r-o',x_ex,u_ex,'k:','LineWidth',3,'MarkerSize',10)
